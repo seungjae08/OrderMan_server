@@ -1,7 +1,7 @@
 ---
 name: "[Retrospect] N주차 회고 - 이름"
 about: N주차 회고 기록할 때 사용되는 Issue Card 입니다.
-title: "[Guide] 회고 Issue Card 마크다운"
+title: "[Retrospect] N주차 회고 - 이름"
 labels: ''
 assignees: ''
 
