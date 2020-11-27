@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 module.exports = {
   development: {
     username: "root",
@@ -9,6 +10,7 @@ module.exports = {
     logging: false,
   },
   secret: {
-    secret: process.env.MY_SECRET_KEY,
+    secret_pw: process.env.MY_SECRET_KEY,
+    secret_jwt: process.env.JWT_SECRET_KEY,
   },
 };

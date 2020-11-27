@@ -4,15 +4,15 @@ const router = express.Router();
 const { userController } = require("../controllers");
 
 // POST /user/signup
-router.post("/user/signup", userController.post);
+router.post("/signup", userController.signup.post);
 
 // POST /user/authup
-router.post("/user/authup", userController.post);
+router.post("/authup", userController.authup.post);
 
 // POST /user/login
-router.post("/user/login", userController.post);
+router.post("/login", userController.login.post);
 
 // GET /user/logout
-router.get("/user/logout", userController.get);
+router.get("/logout", userController.logout.get);
 
 module.exports = router;

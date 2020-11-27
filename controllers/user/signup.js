@@ -1,26 +1,34 @@
 const { user } = require("../../models");
+const { Op } = require("sequelize");
 
+// password 암호화 진행
 const crypto = require("crypto");
 const { secret } = require("../../config/config");
 
 module.exports = {
   post: async (req, res) => {
+    const { userId, password, mobile, address, brand } = req.body;
+    // password 암호화 진행
     const encrypted = crypto
-      .createHmac("sha256", secret.secret)
-      .update(req.body.password)
+      .createHmac("sha256", secret.secret_pw)
+      .update(password)
       .digest("base64");
+
     const [userinfo, created] = await user.findOrCreate({
       where: {
-        [Op.or]: [{ userId: req.body.userId }, { mobile: req.body.mobile }],
+        // userId 혹은 mobile 중복 여부 체크
+        [Op.or]: [{ userId: userId }, { mobile: mobile }],
       },
       defaults: {
-        userId: req.body.userId,
+        userId: userId,
+        // DB에는 암호화된 password 저장
         password: encrypted,
-        mobile: req.body.mobile,
-        address: req.body.address,
-        brand: req.body.brand,
+        mobile: mobile,
+        address: address,
+        brand: brand,
       },
     });
+
     if (created) {
       res.status(200).send("signup success");
     } else {
