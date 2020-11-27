@@ -4,12 +4,12 @@ const router = express.Router();
 const { orderController } = require("../controllers");
 
 // POST /order/items
-router.post("/order/items", orderController.post);
+router.post("/items", orderController.items.post);
 
 // POST /order/options
-router.post("/order/options", orderController.post);
+router.post("/options", orderController.options.post);
 
 // POST /order/market
-router.post("/order/market", orderController.post);
+router.post("/market", orderController.market.post);
 
 module.exports = router;
