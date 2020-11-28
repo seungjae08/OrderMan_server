@@ -37,9 +37,7 @@ module.exports = {
           secret.secret_jwt,
           { expiresIn: "7d" }
         );
-        res.cookie("accessToken", accessToken, {
-          secure: true,
-        });
+        res.cookie("accessToken", accessToken, /*{ secure: true }*/);
         res
           .status(200)
           .json({ accessToken: accessToken, massage: "login success" });
