@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.oauth_user.hasOne(models.oauth_user_market);
+      models.oauth_user.hasMany(models.oauth_user_order);
     }
   }
   oauth_user.init(

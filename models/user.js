@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.user.hasMany(models.order);
+      models.user.hasMany(models.user_order);
       models.user.hasOne(models.user_market);
     }
   }

@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.market.hasOne(models.oauth_user_market);
       models.market.hasOne(models.user_market);
+      models.market.hasOne(models.unknown_market);
     }
   }
   market.init(
