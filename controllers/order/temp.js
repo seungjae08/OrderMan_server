@@ -22,6 +22,8 @@ module.exports = {
       })
     }
 
+    // 보내줄 쿠키 만들기
+
     res.status(200).end();
   },
 };
