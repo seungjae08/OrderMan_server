@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.item.hasOne(models.order_item);
+      models.item.hasMany(models.user_order_item);
+      models.item.hasMany(models.unknown_order_item);
+      models.item.hasMany(models.oauth_user_order_item);
     }
   }
   item.init(
