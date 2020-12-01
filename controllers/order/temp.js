@@ -1,29 +1,28 @@
+const jwt = require("jsonwebtoken");
+const { secret } = require("../../config/config");
+
 module.exports = {
   post: async (req, res) => {
 
     const { itemList } = req.body
 
-    for (let product of itemList) {
-      let [newProduct, created] = await item.findOrCreate({
-        where: {
-          name: product.item,
-          unit: product.unit
-        },
-        defaults: {
-          name: product.item,
-          unit: product.unit
-        }
-      })
-
-      await user_order_item.create({
-        order_id: option.id,
-        item_id: newProduct.id,
-        quantity: product.quantity
-      })
-    }
+    const tempToken = jwt.sign(
+      { temp: itemList },
+      secret.secret_jwt,
+      { expiresIn: "7d" }
+    );
 
     // 보내줄 쿠키 만들기
-
-    res.status(200).end();
+    res.cookie('tempToken', tempToken)
+    res.status(200).json({ tempToken: tempToken });
   },
+  get: async (req, res) => {
+    // totalInfo로 옮기기
+
+    // tempToken 유무 분기 필요
+    const { temp } = jwt.verify(req.cookies.tempToken, secret.secret_jwt);
+
+    console.log(temp)
+    res.status(200).json({ temp: temp })
+  }
 };

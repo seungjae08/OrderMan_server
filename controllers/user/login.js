@@ -38,9 +38,10 @@ module.exports = {
           { expiresIn: "7d" }
         );
         res.cookie("accessToken", accessToken, /*{ secure: true }*/);
+        res.cookie("userType", "standard");
         res
           .status(200)
-          .json({ accessToken: accessToken, massage: "login success" });
+          .json({ accessToken: accessToken, message: "login success" });
         // 로그인 이후 리다이렉션 어떻게 진행할지 논의 필요
       } else {
         res.status(200).send("wrong password");

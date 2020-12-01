@@ -13,7 +13,7 @@ const cookieParser = require("cookie-parser");
 const totalInfoRouter = require("./routes/totalInfo");
 const userRouter = require("./routes/user");
 const orderRouter = require("./routes/order");
-const nonuserRouter = require('./routes/nonuser')
+const unknownRouter = require('./routes/unknown')
 
 const { secret } = require("./config/config");
 
@@ -49,7 +49,7 @@ app.set("jwt-secret", secret.secret);
 
 app.use("/totalinfo", totalInfoRouter);
 app.use("/user", userRouter);
-app.use("/nonuser", nonuserRouter);
+app.use("/unknown", unknownRouter);
 app.use("/order", orderRouter);
 
 app.listen(8000);
