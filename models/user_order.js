@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.user_order.belongsTo(models.user);
       models.user_order.hasMany(models.user_order_item);
-
     }
   };
   user_order.init({
