@@ -12,18 +12,18 @@ module.exports = {
     let result = {};
     if (req.cookies.userType === 'standard') {
       // 신원확인
-      const { userId } = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
-      const userInfo = await user.findOne({ where: { userId: userId } })
+      const userId = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
+      const userInfo = await user.findOne({ where: { userId: userId } });
       console.log(userInfo, '유저 인포!!!!!!!!!!!!')
 
       // 한 유저의 모든 날짜를 반환
-      const dateList = await user_order.findAll({ where: { user_id: 1 } })
+      const dateList = await user_order.findAll({ where: { user_id: userInfo.dataValues.id } });
       console.log(dateList, '데이트리스트~~~~~~~~~~~~~~~~~~~~~~~~')
       // 날짜 데이터의 필드 이름은 date라고 가정.
       // 한 특정 날짜가 속한 user_orders 테이블의 id에 해당하는 모든 user_order_item의 row를 반환
-      for (let date of dateList.dataValues.date) {
+      // for (let date of dateList.dataValues.date) {
 
-      }
+      // }
 
 
       /**

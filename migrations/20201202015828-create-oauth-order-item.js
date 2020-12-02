@@ -1,17 +1,14 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('user_markets', {
+    await queryInterface.createTable('oauth_order_items', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
-        type: Sequelize.INTEGER
-      },
-      marketId: {
+      quantity: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -25,6 +22,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('user_markets');
+    await queryInterface.dropTable('oauth_order_items');
   }
 };

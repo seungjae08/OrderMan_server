@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class item extends Model {
+  class oauth_market extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,17 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.item.hasMany(models.user_order_item);
-      models.item.hasMany(models.unknown_order_item);
-      models.item.hasMany(models.oauth_order_item);
+      models.oauth_market.belongsTo(models.oauth);
+      models.oauth_market.belongsTo(models.market);
     }
   };
-  item.init({
-    name: DataTypes.STRING,
-    unit: DataTypes.STRING
+  oauth_market.init({
   }, {
     sequelize,
-    modelName: 'item',
+    modelName: 'oauth_market',
   });
-  return item;
+  return oauth_market;
 };

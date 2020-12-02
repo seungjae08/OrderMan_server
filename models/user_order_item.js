@@ -13,12 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.user_order_item.belongsTo(models.user_order);
       models.user_order_item.belongsTo(models.item);
-
     }
   };
   user_order_item.init({
-    order_id: DataTypes.INTEGER,
-    item_id: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER
   }, {
     sequelize,

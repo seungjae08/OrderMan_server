@@ -13,12 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.unknown_market.belongsTo(models.unknown);
       models.unknown_market.belongsTo(models.market);
-
     }
   };
   unknown_market.init({
-    user_id: DataTypes.INTEGER,
-    market_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'unknown_market',
