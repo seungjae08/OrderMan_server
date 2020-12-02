@@ -14,7 +14,7 @@ module.exports = {
       // 쿠키에 담긴 jwt의 body를 decode해서 사용자 ID 확인
       const { userId } = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
       // 받은 데이터 확인
-      const { itemList, deliveryTime, paymentMethod } = req.body;
+      const { itemList, deliveryTime, paymentMethod, date } = req.body;
 
       // 사용자 ID로 user테이블의 id 찾기
       const userSelected = await user.findOne({ where: { userId: `${userId}` } });
@@ -22,10 +22,9 @@ module.exports = {
       const option = await user_order.create({
         user_id: userSelected.dataValues.id,
         deliveryTime: deliveryTime,
-        paymentMethod: paymentMethod
+        paymentMethod: paymentMethod,
+        date: date
       })
-
-      console.log(option.dataValues.createdAt, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
       // itemList 객체에 반복문으로 item 테이블에 데이터 기록
       // 위의 기록한 item 테이블의 id를 기반으로 user_order_item 테이블에 데이터 기록
       for (let product of itemList) {

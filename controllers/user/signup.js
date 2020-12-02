@@ -7,8 +7,8 @@ const { secret } = require("../../config/config");
 
 module.exports = {
   post: async (req, res) => {
-    const { userId, password, mobile, address, brand } = req.body;
-    
+    const { userId, password, mobile, address, brand, birth } = req.body;
+
     // password 암호화 진행
     const encrypted = crypto
       .createHmac("sha256", secret.secret_pw)
@@ -26,6 +26,7 @@ module.exports = {
         mobile: mobile,
         address: address,
         brand: brand,
+        birth: birth
       },
     });
 
