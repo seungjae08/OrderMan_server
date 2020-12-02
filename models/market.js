@@ -1,5 +1,7 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class market extends Model {
     /**
@@ -9,20 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.market.hasOne(models.oauth_user_market);
+      models.market.hasOne(models.oauth_market);
       models.market.hasOne(models.user_market);
       models.market.hasOne(models.unknown_market);
     }
-  }
-  market.init(
-    {
-      name: DataTypes.STRING,
-      mobile: DataTypes.STRING,
-    },
-    {
-      sequelize,
-      modelName: "market",
-    }
-  );
+  };
+  market.init({
+    mobile: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'market',
+  });
   return market;
 };

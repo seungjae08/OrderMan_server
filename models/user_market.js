@@ -1,5 +1,7 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class user_market extends Model {
     /**
@@ -12,16 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       models.user_market.belongsTo(models.user);
       models.user_market.belongsTo(models.market);
     }
-  }
-  user_market.init(
-    {
-      userId: DataTypes.INTEGER,
-      marketId: DataTypes.INTEGER,
-    },
-    {
-      sequelize,
-      modelName: "user_market",
-    }
-  );
+  };
+  user_market.init({
+  }, {
+    sequelize,
+    modelName: 'user_market',
+  });
   return user_market;
 };

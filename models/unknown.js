@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   unknown.init({
     mobile: DataTypes.STRING,
     address: DataTypes.STRING,
-    brand: DataTypes.STRING
+    brand: DataTypes.STRING,
+    birth: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'unknown',
