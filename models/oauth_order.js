@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   oauth_order.init({
     user_id: DataTypes.INTEGER,
     deliveryTime: DataTypes.STRING,
-    paymentMethod: DataTypes.STRING
+    paymentMethod: DataTypes.STRING,
+    date: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'oauth_order',
