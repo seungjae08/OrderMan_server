@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   unknown_market.init({
   }, {
+    user_id: DataTypes.INTEGER,
+    market_id : DataTypes.INTEGER,
     sequelize,
     modelName: 'unknown_market',
   });

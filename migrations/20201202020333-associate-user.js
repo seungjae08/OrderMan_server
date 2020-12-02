@@ -3,11 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // field 추가
-    await queryInterface.addColumn('user_orders', 'user_id', Sequelize.INTEGER);
-    await queryInterface.addColumn('user_order_items', 'order_id', Sequelize.INTEGER);
-    await queryInterface.addColumn('user_order_items', 'item_id', Sequelize.INTEGER);
-    await queryInterface.addColumn('user_markets', 'user_id', Sequelize.INTEGER);
-    await queryInterface.addColumn('user_markets', 'market_id', Sequelize.INTEGER);
+    
     // foreign key 연결
     await queryInterface.addConstraint('user_orders', {
       fields: ['user_id'],
@@ -74,10 +70,6 @@ module.exports = {
     await queryInterface.removeConstraint('user_order_items', '1-2');
     await queryInterface.removeConstraint('user_orders', '1-1');
     // field 제거
-    await queryInterface.removeColumn('user_markets', 'market_id');
-    await queryInterface.removeColumn('user_markets', 'user_id');
-    await queryInterface.removeColumn('user_order_items', 'item_id');
-    await queryInterface.removeColumn('user_order_items', 'order_id');
-    await queryInterface.removeColumn('user_orders', 'user_id');
+    
   }
 };
