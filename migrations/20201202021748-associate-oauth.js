@@ -6,7 +6,7 @@ module.exports = {
     
     // foreign key 연결
     await queryInterface.addConstraint('oauth_orders', {
-      fields: ['user_id'],
+      fields: ['userId'],
       type: 'foreign key',
       name: '3-1',
       references: {
@@ -17,7 +17,7 @@ module.exports = {
       onUpdate: 'cascade'
     });
     await queryInterface.addConstraint('oauth_order_items', {
-      fields: ['order_id'],
+      fields: ['orderId'],
       type: 'foreign key',
       name: '3-2',
       references: {
@@ -28,7 +28,7 @@ module.exports = {
       onUpdate: 'cascade'
     });
     await queryInterface.addConstraint('oauth_order_items', {
-      fields: ['item_id'],
+      fields: ['itemId'],
       type: 'foreign key',
       name: '3-3',
       references: {
@@ -39,7 +39,7 @@ module.exports = {
       onUpdate: 'cascade'
     });
     await queryInterface.addConstraint('oauth_markets', {
-      fields: ['user_id'],
+      fields: ['userId'],
       type: 'foreign key',
       name: '3-4',
       references: {
@@ -50,7 +50,7 @@ module.exports = {
       onUpdate: 'cascade'
     });
     await queryInterface.addConstraint('oauth_markets', {
-      fields: ['market_id'],
+      fields: ['marketId'],
       type: 'foreign key',
       name: '3-5',
       references: {
@@ -69,7 +69,5 @@ module.exports = {
     await queryInterface.removeConstraint('oauth_order_items', '3-3');
     await queryInterface.removeConstraint('oauth_order_items', '3-2');
     await queryInterface.removeConstraint('oauth_orders', '3-1');
-    // field 제거
-    
   }
 };
