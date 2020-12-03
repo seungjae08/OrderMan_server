@@ -1,12 +1,10 @@
 'use strict';
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    // field 추가
-    
+  up: async (queryInterface, Sequelize) => {    
     // foreign key 연결
     await queryInterface.addConstraint('user_orders', {
-      fields: ['user_id'],
+      fields: ['userId'],
       type: 'foreign key',
       name: '1-1',
       references: {
@@ -17,7 +15,7 @@ module.exports = {
       onUpdate: 'cascade'
     });
     await queryInterface.addConstraint('user_order_items', {
-      fields: ['order_id'],
+      fields: ['orderId'],
       type: 'foreign key',
       name: '1-2',
       references: {
@@ -28,7 +26,7 @@ module.exports = {
       onUpdate: 'cascade'
     });
     await queryInterface.addConstraint('user_order_items', {
-      fields: ['item_id'],
+      fields: ['itemId'],
       type: 'foreign key',
       name: '1-3',
       references: {
@@ -39,7 +37,7 @@ module.exports = {
       onUpdate: 'cascade'
     });
     await queryInterface.addConstraint('user_markets', {
-      fields: ['user_id'],
+      fields: ['userId'],
       type: 'foreign key',
       name: '1-4',
       references: {
@@ -50,7 +48,7 @@ module.exports = {
       onUpdate: 'cascade'
     });
     await queryInterface.addConstraint('user_markets', {
-      fields: ['market_id'],
+      fields: ['marketId'],
       type: 'foreign key',
       name: '1-5',
       references: {
@@ -68,8 +66,6 @@ module.exports = {
     await queryInterface.removeConstraint('user_markets', '1-4');
     await queryInterface.removeConstraint('user_order_items', '1-3');
     await queryInterface.removeConstraint('user_order_items', '1-2');
-    await queryInterface.removeConstraint('user_orders', '1-1');
-    // field 제거
-    
+    await queryInterface.removeConstraint('user_orders', '1-1');    
   }
 };

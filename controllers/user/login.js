@@ -6,6 +6,22 @@ const crypto = require("crypto");
 const { secret } = require("../../config/config");
 
 module.exports = {
+  get:async (req,res)=>{
+    try{
+      const JWT = jwt.verify(req.cookies.accessToken,secret.secret_jwt);
+      const userId = await user.findOne({ where: { userId:JWT.userId } })
+      
+      res.status(200).send("")
+    }catch(err){
+      if(err.message==="jwt must be provided"){
+        res.status(202).send("") 
+      }
+      else if(err.message === "jwt expired"){
+        res.clearCookie("accessToken")
+        res.status(202).send("")
+      }
+    }
+  },
   post: async (req, res) => {
     const { userId, password } = req.body;
     // password 암호화 진행

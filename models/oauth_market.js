@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   oauth_market.init({
+    userId: DataTypes.INTEGER,
+    marketId : DataTypes.INTEGER,
   }, {
-    user_id: DataTypes.INTEGER,
-    market_id : DataTypes.INTEGER,
     sequelize,
     modelName: 'oauth_market',
   });

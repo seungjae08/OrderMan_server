@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   user_market.init({
+    userId: DataTypes.INTEGER,
+    marketId : DataTypes.INTEGER,
   }, {
-    user_id: DataTypes.INTEGER,
-    market_id : DataTypes.INTEGER,
     sequelize,
     modelName: 'user_market',
   });
