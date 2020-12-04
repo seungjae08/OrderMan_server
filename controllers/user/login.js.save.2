@@ -25,20 +25,22 @@ module.exports = {
   post: async (req, res) => {
     const { userId, password } = req.body;
     // password 암호화 진행
+    console.log(req.body)
     const encrypted = crypto
       .createHmac("sha256", secret.secret_pw)
       .update(password)
       .digest("base64");
-    console.log(userId)
+
     let idSearch = await user.findOne({
       where: {
         userId: userId,
       },
     });
+    console.log(userId,password);
     // user 테이블에서 id 찾았을 때 없으면 "id does not exist"
     if (idSearch) {
-    let pwSearch = await user.findOne({
-      where: {
+      let pwSearch = await user.findOne({
+        where: {
           userId: userId,
           password: encrypted,
         },
@@ -52,10 +54,10 @@ module.exports = {
           secret.secret_jwt,
           { expiresIn: "7d" }
         );
-        res.cookie("accessToken", accessToken, { secure: true,sameSite:'none' });
-        res.cookie("userType", "standard",{secure:true,sameSite:'none'});
-        res
-          .status(200)
+        res.cookie("accessToken", accessToken, { secure: true,sameSite:
+none" });
+        res.cookie("userType", "standard",{secure:true,sameSite:'none');
+        res.status(200)
           .json({ accessToken: accessToken, message: "login success" });
         // 로그인 이후 리다이렉션 어떻게 진행할지 논의 필요
       } else {

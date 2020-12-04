@@ -20,6 +20,7 @@ module.exports = {
   
         // 사용자 ID로 user테이블의 id 찾기
         const userSelected = await user.findOne({
+	  attributes:["id"],
           where: { userId: JWT.userId },
           raw: true
         });

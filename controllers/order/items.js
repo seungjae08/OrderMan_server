@@ -32,11 +32,11 @@ module.exports = {
         for (let product of itemList) {
           let [newProduct, created] = await item.findOrCreate({
             where: {
-              name: product.item,
+              item: product.item,
               unit: product.unit
             },
             defaults: {
-              name: product.item,
+              item: product.item,
               unit: product.unit
             }
           })
@@ -74,11 +74,11 @@ module.exports = {
         for (let product of itemList) {
           let [newProduct, created] = await item.findOrCreate({
             where: {
-              name: product.item,
+              item: product.item,
               unit: product.unit
             },
             defaults: {
-              name: product.item,
+              item: product.item,
               unit: product.unit
             }
           })

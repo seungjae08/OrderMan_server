@@ -11,7 +11,7 @@ module.exports = {
         { expiresIn: "7d" }
       );
       // 보내줄 쿠키 만들기
-      res.cookie('tempToken', tempToken)
+      res.cookie('tempToken', tempToken,{secure:true,sameSite:"none"})
       res.status(200).json({ tempToken: tempToken });
     }catch(err){
       res.status(404).json(err)

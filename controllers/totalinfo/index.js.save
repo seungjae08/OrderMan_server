@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 const { secret } = require('../../config/config')
 const {
-  user, user_order, user_order_item,user_market,
+  user, user_order, user_order_item,
   // oauth_user, oauth_user_order, oauth_user_order_item,
   unknown, unknown_order, unknown_order_item,
-  item,market
+  item
 } = require("../../models");
 module.exports = {
   get: async (req, res) => {
@@ -43,7 +43,7 @@ module.exports = {
             const orderEli = await acc;
             // result === {name, unit}
             let result = await item.findAll({
-              attributes: ["item", "unit"],
+              attributes: ["name", "unit"],
               where: { id: [obj.itemId] },
               raw: true
             });
@@ -63,15 +63,14 @@ module.exports = {
           }
           return await orderLiEl;
         }, {})
-	console.log("why")
-	const market_ = await user_market.findOne({
-	  attributes:["marketId"],
-          where : {userId:userId.id}
+	const market = await user_market.findOne({
+	  attributes : ["marketId"],
+          where : {userId:userId}
         })
-	console.log(market_)
         const market_mobile = await market.findOne({
-	  attributes:["mobile"],
-          where : {id:market_.marketId}
+	  attributes:["
+"],
+          where : {id:market.marketId}
         })
         await res.send({orderList,market:{mobile:market_mobile.mobile}})
   

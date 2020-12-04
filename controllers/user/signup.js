@@ -29,7 +29,6 @@ module.exports = {
         birth: birth
       },
     });
-
     if (created) {
       res.status(200).send("signup success");
     } else {
