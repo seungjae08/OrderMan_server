@@ -4,9 +4,10 @@ const { secret } = require("../../config/config");
 module.exports = {
   post: async (req, res) => {
     try{
-      const { itemList } = req.body
+      const { itemList,hopePrice } = req.body
       const tempToken = jwt.sign(
-        { temp: itemList },
+        { itemList: itemList,
+	  hopePrice:hopePrice },
         secret.secret_jwt,
         { expiresIn: "7d" }
       );
@@ -21,14 +22,14 @@ module.exports = {
     // totalInfo로 옮기기
     // tempToken 유무 분기 필요
     try{
-      const { temp } = jwt.verify(req.cookies.tempToken, secret.secret_jwt);
+      const JWT = jwt.verify(req.cookies.tempToken, secret.secret_jwt);
 
-      console.log(temp)
-      res.status(200).json({ itemList: temp })
+      
+      res.status(200).json({itemList:JWT.itemList,hopePrice:JWT.hopePrice })
     }
     catch(err){
       if(err.message ==="jwt must be provided"){
-        res.status(202).send({itemList:[]})
+        res.status(202).json({itemList:[],hopePrice:""})
       }
       else{
         res.status(404).json(err)

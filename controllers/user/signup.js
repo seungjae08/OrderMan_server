@@ -8,7 +8,7 @@ const { secret } = require("../../config/config");
 module.exports = {
   post: async (req, res) => {
     const { userId, password, mobile, address, brand, birth } = req.body;
-
+    
     // password 암호화 진행
     const encrypted = crypto
       .createHmac("sha256", secret.secret_pw)
@@ -32,7 +32,7 @@ module.exports = {
     if (created) {
       res.status(200).send("signup success");
     } else {
-      res.status(204).send("already existing user");
+      res.status(204).send({userId,password,mobile,address,brand,birth});
     }
   },
 };

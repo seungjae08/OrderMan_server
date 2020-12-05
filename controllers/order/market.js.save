@@ -53,36 +53,27 @@ module.exports = {
         res.status(200).end()
       }
     }catch(err){
-        if(err.message ==="jwt must be provided"){
-          //비회원들에게 진행될 코드들
-	try{
-          const unknownId =Number( req.cookies.unknown_id)
-          const { mobile } = req.body;
+      if(err.message ==="jwt must be provided"){
+        //비회원들에게 진행될 코드들
+        const unknownId =Number( req.cookies.unknown_id)
+        const { mobile } = req.body;
 
-          let [mart, b] = await market.findOrCreate({
-            where: { mobile: mobile },
-            defaults: { mobile: mobile }
-          })
-	
-	
-          let [a, created] = await unknown_market.findOrCreate({
-	    attributes:["id","userId","marketId"],
-            where: { userId: unknownId },
-            defaults: { userId: unknownId, marketId: mart.id }
-          })
-       
- 
-          if (!created) {
-            await unknown_market.update({ market_id: mart.id }, {
-            where: { user_id: unknownId }
-            });
-          }
-          // 마지막으로 보내줄 값 지정필요
-          res.status(200).send({mart,b,unknownId,a})
-         
-        }catch(err){
-         res.status(202).send(err)
-        }
+        let [mart, b] = await market.findOrCreate({
+          where: { mobile: mobile },
+          defaults: { mobile: mobile }
+        })
+
+      //et [a, created] = await unknown_market.findOrCreate({
+      //    where: { userId: Number(unknownId) },
+      //    defaults: { userId: Number( unknownId), marketId: mart.id }
+      //  })
+      //  if (!created) {
+      //    await unknown_market.update({ market_id: mart.id }, {
+      //      where: { user_id: unknownId }
+      //    });
+      //  }
+        // 마지막으로 보내줄 값 지정필요
+        res.status(200).send({mart,b,unknownId})
       }
     }
   },
