@@ -16,27 +16,28 @@ module.exports = {
         // 쿠키에 담긴 jwt의 body를 decode해서 사용자 ID 확인
         
         // 받은 데이터 확인
-        const { itemList, deliveryTime, paymentMethod, date } = req.body;
+        const { itemList, deliveryTime, paymentMethod, date,hopePrice } = req.body;
   
         // 사용자 ID로 user테이블의 id 찾기
-        const userSelected = await user.findOne({ where: { userId: `${userId}` } });
+        const userSelected = await user.findOne({ where: { userId: userId} });
         // 위의 id를 기반으로 user_order 테이블에 데이터 기록
         const option = await user_order.create({
           userId: userSelected.dataValues.id,
           deliveryTime: deliveryTime,
           paymentMethod: paymentMethod,
-          date: date
+          date: date,
+          hopePrice:hopePrice
         })
         // itemList 객체에 반복문으로 item 테이블에 데이터 기록
         // 위의 기록한 item 테이블의 id를 기반으로 user_order_item 테이블에 데이터 기록
         for (let product of itemList) {
           let [newProduct, created] = await item.findOrCreate({
             where: {
-              name: product.item,
+              item: product.item,
               unit: product.unit
             },
             defaults: {
-              name: product.item,
+              item: product.item,
               unit: product.unit
             }
           })
@@ -63,22 +64,22 @@ module.exports = {
     catch (err){
       if(err.message ==="jwt must be provided"){
         const unknownId = req.cookies.unknown_id
-        const { itemList, deliveryTime, paymentMethod } = req.body;
+        const { itemList, deliveryTime, paymentMethod} = req.body;
   
         const option = await unknown_order.create({
           userId: unknownId,
           deliveryTime: deliveryTime,
-          paymentMethod: paymentMethod
+          paymentMethod: paymentMethod,
         })
   
         for (let product of itemList) {
           let [newProduct, created] = await item.findOrCreate({
             where: {
-              name: product.item,
+              item: product.item,
               unit: product.unit
             },
             defaults: {
-              name: product.item,
+              item: product.item,
               unit: product.unit
             }
           })

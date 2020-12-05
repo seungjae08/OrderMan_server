@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 const { secret } = require('../../config/config')
 const {
-  user, user_order, user_order_item,
+  user, user_order, user_order_item,user_market,
   // oauth_user, oauth_user_order, oauth_user_order_item,
   unknown, unknown_order, unknown_order_item,
-  item
+  item,market
 } = require("../../models");
 module.exports = {
   get: async (req, res) => {
@@ -29,8 +29,8 @@ module.exports = {
         // 날짜에 해당하는 모든 주문 리스트
   
         const orderList = await userOrderInfo.reduce(async (acc, obj) => {
-          console.log('orderList의 obj: ', obj)
           const orderLiEl = await acc;
+
           // option === [ {item_id, quantity}, {item_id, quantity} ]
           const option = await user_order_item.findAll({
             attributes: ["itemId", "quantity"],
@@ -41,18 +41,23 @@ module.exports = {
           // order === [{name, quantity, unit},{name, quantity, unit}]
           const order = await option.reduce(async (acc, obj) => {
             const orderEli = await acc;
+
             // result === {name, unit}
             let result = await item.findAll({
               attributes: ["name", "unit"],
               where: { id: [obj.itemId] },
               raw: true
             });
+
             result = result[0]
+
             result = {
               ...result,
               quantity: obj.quantity
             };
+
             (await orderEli.push(result));
+
             return orderEli;
           }, []);
   
@@ -63,7 +68,15 @@ module.exports = {
           }
           return await orderLiEl;
         }, {})
-        await res.send(orderList)
+        const market_ = await user_market.findOne({
+          attributes:["marketId"],
+          where : {userId:userId.id}
+        })
+        console.log(market)
+        const market_mobile = await market.findOne({
+          where : {id:market_.marketId}
+        })
+        await res.send({orderList,market:{mobile:market_mobile.mobile}})
         /**
          * { 
          *  orderList: { 
@@ -81,14 +94,8 @@ module.exports = {
     }catch(err){
       if(err.message ==="jwt must be provided"){
         //비회원들에게 진행될 코드들
-        res.status(202).send({})
+        res.status(202).send({orderList:{},market:{}})
       }
     }
-
-
-    
-   
-    // 완전 최초 사용자 일 때
-   
   },
 };

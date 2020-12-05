@@ -14,12 +14,12 @@ module.exports = {
       const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
       if (req.cookies.userType === "standard") {
         // 쿠키에 담긴 jwt의 body를 decode해서 사용자 ID 확인
-        
         // 받은 데이터 확인
         const { mobile } = req.body;
   
         // 사용자 ID로 user테이블의 id 찾기
         const userSelected = await user.findOne({
+          attributes:["id"],
           where: { userId: JWT.userId },
           raw: true
         });
@@ -54,7 +54,7 @@ module.exports = {
       }
     }catch(err){
       if(err.message ==="jwt must be provided"){
-        //비회원들에게 진행될 코드들
+        // //비회원들에게 진행될 코드들
         const unknownId = req.cookies.unknown_id
         const { mobile } = req.body;
   
@@ -62,18 +62,24 @@ module.exports = {
           where: { mobile: mobile },
           defaults: { mobile: mobile }
         })
-  
-        let [a, created] = await unknown_market.findOrCreate({
-          where: { user_id: unknownId },
-          defaults: { user_id: unknownId, market_id: mart.id }
-        })
-        if (!created) {
-          await unknown_market.update({ market_id: mart.id }, {
-            where: { user_id: unknownId }
-          });
+        try{
+          let [a, created] = await unknown_market.findOrCreate({
+            where: { userId: unknownId },
+            defaults: { userId: unknownId, marketId: mart.id }
+          })
+          res.status(200).send(a)
         }
+        catch(err){
+          res.status(202).send(err)
+        } 
+        
+
+        // if (!created) {
+        //   await unknown_market.update({ marketId: mart.id }, {
+        //     where: { user_id: unknownId }
+        //   });
+        // }
         // 마지막으로 보내줄 값 지정필요
-        res.status(200).send(req.cookies)
       }
     }    
   },

@@ -4,14 +4,17 @@ const { secret } = require("../../config/config");
 module.exports = {
   post: async (req, res) => {
     try{
-      const { itemList } = req.body
+      const { itemList,hopePrice } = req.body
       const tempToken = jwt.sign(
-        { temp: itemList },
+        { 
+          itemList: itemList,
+          hopePrice: hopePrice,
+        },
         secret.secret_jwt,
         { expiresIn: "7d" }
       );
       // 보내줄 쿠키 만들기
-      res.cookie('tempToken', tempToken)
+      res.cookie('tempToken', tempToken,{secure:true,sameSite:"none"})
       res.status(200).json({ tempToken: tempToken });
     }catch(err){
       res.status(404).json(err)
@@ -21,10 +24,9 @@ module.exports = {
     // totalInfo로 옮기기
     // tempToken 유무 분기 필요
     try{
-      const { temp } = jwt.verify(req.cookies.tempToken, secret.secret_jwt);
-
+      const { itemList , hopePrice } = jwt.verify(req.cookies.tempToken, secret.secret_jwt);
       console.log(temp)
-      res.status(200).json({ itemList: temp })
+      res.status(200).json({ itemList: itemList, hopePrice:hopePrice })
     }
     catch(err){
       if(err.message ==="jwt must be provided"){
