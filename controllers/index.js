@@ -3,5 +3,5 @@ module.exports = {
   orderController: require("./order"),
   totalInfoController: require("./totalinfo"),
   unknownController: require('./unknown'),
-  managementController: require('./order_management/order')
+  managementController: require('./order_management')
 };
