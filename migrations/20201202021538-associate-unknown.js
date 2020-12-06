@@ -10,7 +10,7 @@ module.exports = {
       type: 'foreign key',
       name: '2-1',
       references: {
-        table: 'users',
+        table: 'unknowns',
         field: 'id'
       },
       onDelete: 'cascade',
@@ -21,7 +21,7 @@ module.exports = {
       type: 'foreign key',
       name: '2-2',
       references: {
-        table: 'user_orders',
+        table: 'unknown_orders',
         field: 'id'
       },
       onDelete: 'cascade',
@@ -43,7 +43,7 @@ module.exports = {
       type: 'foreign key',
       name: '2-4',
       references: {
-        table: 'users',
+        table: 'unknowns',
         field: 'id'
       },
       onDelete: 'cascade',

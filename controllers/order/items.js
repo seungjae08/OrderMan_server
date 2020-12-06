@@ -19,7 +19,7 @@ module.exports = {
         const { itemList, deliveryTime, paymentMethod, date,hopePrice } = req.body;
   
         // 사용자 ID로 user테이블의 id 찾기
-        const userSelected = await user.findOne({ where: { userId: userId} });
+        const userSelected = await user.findOne({ where: { userId: userId } });
         // 위의 id를 기반으로 user_order 테이블에 데이터 기록
         const option = await user_order.create({
           userId: userSelected.dataValues.id,
