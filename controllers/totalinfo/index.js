@@ -28,8 +28,8 @@ module.exports = {
 
         // 날짜에 해당하는 모든 주문 리스트
         const orderList = await userOrderInfo.reduce(async (acc, obj) => {
-          console.log('orderList의 obj: ', obj)
           const orderLiEl = await acc;
+
           // option === [ {item_id, quantity}, {item_id, quantity} ]
           const option = await user_order_item.findAll({
             attributes: ["itemId", "quantity"],
@@ -40,18 +40,23 @@ module.exports = {
           // order === [{name, quantity, unit},{name, quantity, unit}]
           const order = await option.reduce(async (acc, obj) => {
             const orderEli = await acc;
+
             // result === {name, unit}
             let result = await item.findAll({
               attributes: ["item", "unit"],
               where: { id: [obj.itemId] },
               raw: true
             });
+
             result = result[0]
+
             result = {
               ...result,
               quantity: obj.quantity
             };
+
             (await orderEli.push(result));
+
             return orderEli;
           }, []);
 

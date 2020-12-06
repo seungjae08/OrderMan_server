@@ -14,6 +14,7 @@ const totalInfoRouter = require("./routes/totalInfo");
 const userRouter = require("./routes/user");
 const orderRouter = require("./routes/order");
 const unknownRouter = require('./routes/unknown')
+const managementRouter =require('./routes/management')
 
 const { secret } = require("./config/config");
 
@@ -53,5 +54,6 @@ app.use("/totalinfo", totalInfoRouter);
 app.use("/user", userRouter);
 app.use("/unknown", unknownRouter);
 app.use("/order", orderRouter);
+app.use("/management",managementRouter);
 
 app.listen(8080);
