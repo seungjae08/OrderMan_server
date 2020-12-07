@@ -25,18 +25,18 @@ module.exports = {
           raw: true
         })
         .catch(err => { console.log(err) });
-
+	console.log("날짜반환")
         // 날짜에 해당하는 모든 주문 리스트
         const orderList = await userOrderInfo.reduce(async (acc, obj) => {
           const orderLiEl = await acc;
-
+	  console.log("주문 리스트")
           // option === [ {item_id, quantity}, {item_id, quantity} ]
           const option = await user_order_item.findAll({
             attributes: ["itemId", "quantity"],
             where: { orderId: [obj.id] }, // obj.id => [1,2,3,4,5]
             raw: true
           })
-
+          console.log("주문 옵션")
           // order === [{name, quantity, unit},{name, quantity, unit}]
           const order = await option.reduce(async (acc, obj) => {
             const orderEli = await acc;

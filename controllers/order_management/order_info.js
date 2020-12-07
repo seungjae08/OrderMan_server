@@ -7,8 +7,8 @@ const {
 module.exports={
     get:async (req,res)=>{
         try{
-            let a = await user.findAll()
-            res.send(a)
+           let user_order = await user_order.findAll()
+            res.send(user_order)
         }catch(err){
             res.send(err)
         }
