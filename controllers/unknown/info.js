@@ -12,7 +12,7 @@ module.exports = {
         })
 
         res.cookie("unknown_id", data.dataValues.id, { secure: true,sameSite:"none" });
-        res.cookie("userType", "unknown");
+        res.cookie("userType", "unknown",{secure:true,sameSite:"none"});
         res.status(200).json("success");
     },
 };
