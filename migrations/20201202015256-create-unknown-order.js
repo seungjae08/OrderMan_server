@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       state:{
-        type: Sequelize.STRING
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

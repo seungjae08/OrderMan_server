@@ -40,17 +40,7 @@ module.exports={
             
 
             let userData = await userOrderData.reduce(async (acc,ele)=>{
-                let [state,created]= await management.findOrCreate({
-                    where:{
-                        orderId:ele.id,
-                        userId:ele.userId,
-                        userType:"user"
-                    },
-                    defaults:{
-                        state:false
-                    },
-                    raw:true
-                })
+               
                 let userInfo = users.filter(userele=>ele.userId===userele.id)[0]
                 let orderItems = userOrderItems.filter((orderItemsEle)=>orderItemsEle.orderId===ele.id)
                 let itemList = orderItems.reduce((listacc,listele)=>{
@@ -75,17 +65,7 @@ module.exports={
             },[])
 
             let unknownData = unknownOrderData.reduce(async (acc,ele)=>{
-                let [state,created]= await management.findOrCreate({
-                    where:{
-                        orderId:ele.id,
-                        userId:ele.userId,
-                        userType:"unknown"
-                    },
-                    defaults:{
-                        state:false
-                    },
-                    raw:true
-                })
+                
                 let userInfo = unknowns.filter(userele=>ele.userId===userele.id)[0]
                 let orderItems = unknownOrderItems.filter((orderItemsEle)=>orderItemsEle.orderId===ele.id)
                 let itemList = orderItems.reduce((listacc,listele)=>{

@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       state:{
-        type: Sequelize.STRING
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

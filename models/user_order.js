@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     deliveryTime: DataTypes.STRING,
     paymentMethod: DataTypes.STRING,
     date: DataTypes.STRING,
-    state : DataTypes.STRING
+    state : DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'user_order',

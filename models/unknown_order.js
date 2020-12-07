@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     deliveryTime: DataTypes.STRING,
     paymentMethod: DataTypes.STRING,
-    state : DataTypes.STRING
+    state : DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'unknown_order',
