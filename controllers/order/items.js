@@ -26,7 +26,8 @@ module.exports = {
           deliveryTime: deliveryTime,
           paymentMethod: paymentMethod,
           date: date,
-          hopePrice:hopePrice
+          hopePrice:hopePrice,
+          state:false
         })
         // itemList 객체에 반복문으로 item 테이블에 데이터 기록
         // 위의 기록한 item 테이블의 id를 기반으로 user_order_item 테이블에 데이터 기록
@@ -70,6 +71,7 @@ module.exports = {
           userId: unknownId,
           deliveryTime: deliveryTime,
           paymentMethod: paymentMethod,
+          state:false
         })
   
         for (let product of itemList) {

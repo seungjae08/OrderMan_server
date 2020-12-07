@@ -18,6 +18,9 @@ module.exports = {
       paymentMethod: {
         type: Sequelize.STRING
       },
+      state:{
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

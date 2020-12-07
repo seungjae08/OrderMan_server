@@ -16,74 +16,72 @@ module.exports = {
       const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
 
         // 신원확인
-        const userId = await user.findOne({ where: { userId: JWT.userId } })
+      const userId = await user.findOne({ where: { userId: JWT.userId } })
 
         // 한 유저가 주문한 모든 날짜를 반환
-        const userOrderInfo = await user_order.findAll({
-          attributes: ["id", "date"],
-          where: { userId: userId.id },
+      const userOrderInfo = await user_order.findAll({
+        attributes: ["id", "date"],
+        where: { userId: userId.id },
+        raw: true
+      })
+      .catch(err => { console.log(err) });
+	    console.log("날짜반환")
+      // 날짜에 해당하는 모든 주문 리스트
+      const orderList = await userOrderInfo.reduce(async (acc, obj) => {
+        const orderLiEl = await acc;
+	      console.log("주문 리스트")
+        // option === [ {item_id, quantity}, {item_id, quantity} ]
+        const option = await user_order_item.findAll({
+          attributes: ["itemId", "quantity"],
+          where: { orderId: [obj.id] }, // obj.id => [1,2,3,4,5]
           raw: true
         })
-        .catch(err => { console.log(err) });
-	console.log("날짜반환")
-        // 날짜에 해당하는 모든 주문 리스트
-        const orderList = await userOrderInfo.reduce(async (acc, obj) => {
-          const orderLiEl = await acc;
-	  console.log("주문 리스트")
-          // option === [ {item_id, quantity}, {item_id, quantity} ]
-          const option = await user_order_item.findAll({
-            attributes: ["itemId", "quantity"],
-            where: { orderId: [obj.id] }, // obj.id => [1,2,3,4,5]
+        console.log("주문 옵션")
+        // order === [{name, quantity, unit},{name, quantity, unit}]
+        const order = await option.reduce(async (acc, obj) => {
+          const orderEli = await acc;
+
+          // result === {name, unit}
+          let result = await item.findAll({
+            attributes: ["item", "unit"],
+            where: { id: [obj.itemId] },
             raw: true
-          })
-          console.log("주문 옵션")
-          // order === [{name, quantity, unit},{name, quantity, unit}]
-          const order = await option.reduce(async (acc, obj) => {
-            const orderEli = await acc;
+          });
 
-            // result === {name, unit}
-            let result = await item.findAll({
-              attributes: ["item", "unit"],
-              where: { id: [obj.itemId] },
-              raw: true
-            });
+          result = result[0]
+          result = {
+            ...result,
+            quantity: obj.quantity
+          };
 
-            result = result[0]
+          (await orderEli.push(result));
 
-            result = {
-              ...result,
-              quantity: obj.quantity
-            };
+          return orderEli;
+        }, []);
 
-            (await orderEli.push(result));
-
-            return orderEli;
-          }, []);
-
-          if (!orderLiEl[obj.date]) {
-            orderLiEl[obj.date] = order;
-          } else {
-            orderLiEl[obj.date] = [...orderLiEl[obj.date], ...order]
-          }
-          return await orderLiEl;
-        }, {})
-	console.log("why")
-	const market_ = await user_market.findOne({
-	  attributes:["marketId"],
-          where : {userId:userId.id}
-        }).catch(err=>{console.log(err)})
-	console.log(market_)
-        if(market_===null){
-          console.log("여긴되냐?")
-	  res.send({orderList:orderList,market:{mobile:""}})
-	}else{	
-          const market_mobile = await market.findOne({
-	    attributes:["mobile"],
-            where : {id:market_.marketId}
-          })
+        if (!orderLiEl[obj.date]) {
+          orderLiEl[obj.date] = order;
+        } else {
+          orderLiEl[obj.date] = [...orderLiEl[obj.date], ...order]
+        }
+        return await orderLiEl;
+      }, {})
+	    console.log("why")
+	    const market_ = await user_market.findOne({
+	      attributes:["marketId"],
+        where : {userId:userId.id}
+      }).catch(err=>{console.log(err)})
+	    console.log(market_)
+      if(market_===null){
+  	    res.send({orderList:orderList,market:{mobile:""}})
+	    }else{	
+        const market_mobile = await market.findOne({
+	        attributes:["mobile"],
+          where : {id:market_.marketId}
+        })
        
-          res.send({orderList:orderList,market:{mobile:market_mobile.mobile}})
-	}
+        res.send({orderList:orderList,market:{mobile:market_mobile.mobile}})
+	    }
         /**
          * {
          *  orderList: {
