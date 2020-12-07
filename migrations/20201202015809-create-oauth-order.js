@@ -23,6 +23,9 @@ module.exports = {
       hopePrice:{
         type: Sequelize.INTEGER
       },
+      state:{
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

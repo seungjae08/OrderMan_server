@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     deliveryTime: DataTypes.STRING,
     paymentMethod: DataTypes.STRING,
-    date: DataTypes.STRING
+    date: DataTypes.STRING,
+    state : DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'oauth_order',
