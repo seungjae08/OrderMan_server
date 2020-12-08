@@ -105,7 +105,7 @@ module.exports={
             let {userType,userId,orderId,state} = req.body;
             if(userType ==="user"){
                 let orderState = await user_order.update({
-                    state:true
+                    state:!state
                 },{
                     where:{
                         id:orderId,
@@ -115,7 +115,7 @@ module.exports={
                 res.send(orderState)
             }else if(userType==="unknown"){
                 let orderState = await unknown_order.update({
-                    state:true
+                    state:!state
                 },{
                     where:{
                         id:orderId,
