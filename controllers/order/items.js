@@ -94,7 +94,7 @@ module.exports = {
   
         // 마지막으로 보내줄 값 지정필요
         res.clearCookie("tempToken",{secure:true,sameSite:"none"})
-        res.status(202).send(req.cookies)
+        res.status(200).send(req.cookies)
       }
       res.status(404).send(err)
     }
