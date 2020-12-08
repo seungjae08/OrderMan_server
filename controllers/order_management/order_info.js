@@ -39,8 +39,7 @@ module.exports={
 
             
 
-            let userData = await userOrderData.reduce(async (acc,ele)=>{
-               
+            let userData = await userOrderData.reduce( (acc,ele)=>{
                 let userInfo = users.filter(userele=>ele.userId===userele.id)[0]
                 let orderItems = userOrderItems.filter((orderItemsEle)=>orderItemsEle.orderId===ele.id)
                 let itemList = orderItems.reduce((listacc,listele)=>{
@@ -51,6 +50,7 @@ module.exports={
                         quantity:listele.quantity
                     }]
                 },[])
+                
                 return [...acc,{
                     userType:"user",
                     orderId:ele.id,
@@ -64,8 +64,7 @@ module.exports={
                 }]
             },[])
 
-            let unknownData = unknownOrderData.reduce(async (acc,ele)=>{
-                
+            let unknownData = unknownOrderData.reduce( (acc,ele)=>{
                 let userInfo = unknowns.filter(userele=>ele.userId===userele.id)[0]
                 let orderItems = unknownOrderItems.filter((orderItemsEle)=>orderItemsEle.orderId===ele.id)
                 let itemList = orderItems.reduce((listacc,listele)=>{
@@ -76,7 +75,6 @@ module.exports={
                         quantity:listele.quantity
                     }]
                 },[])
-
                 // unknown 유저는 date column이 존재 하지 않기 때문에 date는 공백으로 둔다.
                 ele["date"] = "";
                 return [...acc,{
@@ -91,20 +89,13 @@ module.exports={
                     state:ele.state
                 }]
             },[])
-
             let arr =[...userData,...unknownData];
-            
             let result = arr.sort((a,b)=>{
                 let first = a.deliveryTime.split("-").join("").split(" ").join("").split(":").join("");
                 let second = b.deliveryTime.split("-").join("").split(" ").join("").split(":").join("");
                 return second-first
             })
-
             res.send({orders:result})
-
-          
-           
-           
         }catch(err){
             res.send(err)
         }
