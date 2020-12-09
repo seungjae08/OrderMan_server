@@ -76,11 +76,16 @@ module.exports = {
 
         let obj ={}
         obj[ele.date] = orderIdItems
-        return [...acc,obj]
-      },[])
+        return {...acc,orderList:obj}
+      },{})
+      // let dataObject = {}
+      // const result = data.reduce((ele)=>{
+      //   if(Object.keys(ele) ===Object.keys(dataObject)){
+      //     dataObject[Object.keys(ele)[0]].push(ele.)
+      //   }
+      // })
 
-
-      res.json({orderList:data,market:{mobile:marketMobiel.mobile}})
+      res.json({...data,market:{mobile:marketMobiel.mobile}})
       
 
 
