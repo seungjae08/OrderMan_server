@@ -19,7 +19,7 @@ module.exports = {
 
         // 사용자 ID로 user테이블의 id 찾기
         const userSelected = await user.findOne({
-	  attributes:["id"],
+	        attributes:["id"],
           where: { userId: JWT.userId },
           raw: true
         });
@@ -55,7 +55,7 @@ module.exports = {
     }catch(err){
         if(err.message ==="jwt must be provided"){
           //비회원들에게 진행될 코드들
-	try{
+	      try{
           const unknownId =Number( req.cookies.unknown_id)
           const { mobile } = req.body;
 
@@ -66,7 +66,7 @@ module.exports = {
 	
 	
           let [a, created] = await unknown_market.findOrCreate({
-	    attributes:["id","userId","marketId"],
+	          attributes:["id","userId","marketId"],
             where: { userId: unknownId },
             defaults: { userId: unknownId, marketId: mart.id }
           })

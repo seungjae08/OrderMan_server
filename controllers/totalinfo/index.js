@@ -14,74 +14,76 @@ module.exports = {
     try{
       //회원들
       const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
-
-        // 신원확인
+      // 신원확인
       const userId = await user.findOne({ where: { userId: JWT.userId } })
 
-        // 한 유저가 주문한 모든 날짜를 반환
+
+      const userMarket = await user_market.findOne({
+        attributes:["marketId"],
+        where:{userId:userId.id}
+      })
+      const marketMobiel =await market.findOne({
+        attributes:["mobile"],
+        where:{id:userMarket.marketId}
+      })
+      // 한 유저가 주문한 모든 날짜를 반환
       const userOrderInfo = await user_order.findAll({
-        attributes: ["id", "date"],
+        attributes: ["id", "date","state"],
         where: { userId: userId.id },
         raw: true
-      })
-      .catch(err => { console.log(err) });
-	    console.log("날짜반환")
+      }).catch(err => { console.log(err) });
       // 날짜에 해당하는 모든 주문 리스트
-      const orderList = await userOrderInfo.reduce(async (acc, obj) => {
-        const orderLiEl = await acc;
-	      console.log("주문 리스트")
-        // option === [ {item_id, quantity}, {item_id, quantity} ]
-        const option = await user_order_item.findAll({
-          attributes: ["itemId", "quantity"],
-          where: { orderId: [obj.id] }, // obj.id => [1,2,3,4,5]
-          raw: true
-        })
-        console.log("주문 옵션")
-        // order === [{name, quantity, unit},{name, quantity, unit}]
-        const order = await option.reduce(async (acc, obj) => {
-          const orderEli = await acc;
 
-          // result === {name, unit}
-          let result = await item.findAll({
-            attributes: ["item", "unit"],
-            where: { id: [obj.itemId] },
-            raw: true
-          });
+      const orderIds = userOrderInfo.reduce((acc,ele)=>{
+        return [...acc,ele.id]
+      },[])
+      
+      const userOrderItems = await user_order_item.findAll({
+        attributes:["id","orderId","itemId","quantity"],
+        where:{ orderId: orderIds},
+        raw:true
+      })
 
-          result = result[0]
-          result = {
-            ...result,
-            quantity: obj.quantity
-          };
+      const itemIds = userOrderItems.reduce((acc,ele)=>{
+        return [...acc,ele.itemId]
+      },[]);
 
-          (await orderEli.push(result));
-
-          return orderEli;
-        }, []);
-
-        if (!orderLiEl[obj.date]) {
-          orderLiEl[obj.date] = order;
-        } else {
-          orderLiEl[obj.date] = [...orderLiEl[obj.date], ...order]
+      const itemIdsDeleteOverlap = itemIds.reduce((acc,ele)=>{
+        if(acc.indexOf(ele)===-1){
+          return [...acc,ele]
         }
-        return await orderLiEl;
-      }, {})
-	    console.log("why")
-	    const market_ = await user_market.findOne({
-	      attributes:["marketId"],
-        where : {userId:userId.id}
-      }).catch(err=>{console.log(err)})
-	    console.log(market_)
-      if(market_===null){
-  	    res.send({orderList:orderList,market:{mobile:""}})
-	    }else{	
-        const market_mobile = await market.findOne({
-	        attributes:["mobile"],
-          where : {id:market_.marketId}
-        })
-       
-        res.send({orderList:orderList,market:{mobile:market_mobile.mobile}})
-	    }
+        return [...acc]
+      },[])
+
+      const items = await item.findAll({
+        attributes:["id","item","unit"],
+        where:{id:itemIdsDeleteOverlap},
+        raw:true
+      })
+ 
+      const data = userOrderInfo.reduce((acc,ele)=>{
+        let orderIdItems = userOrderItems.reduce((OIacc,OIele)=>{
+          if(ele.id===OIele.orderId){
+            const item_ = items.filter(itemId => itemId.id===OIele.itemId)[0];
+            return [...OIacc,{
+              item : item_.item,
+              unit : item_.unit,
+              quantity : OIele.quantity
+            }]
+          }
+          return [...OIacc]
+        },[])
+
+        let obj ={}
+        obj[ele.date] = orderIdItems
+        return [...acc,obj]
+      },[])
+
+
+      res.json({orderList:data,mobile:marketMobiel.mobile})
+      
+
+
         /**
          * {
          *  orderList: {
@@ -98,7 +100,7 @@ module.exports = {
         res.status(202).send({
             orderList:{},
             market:{
-		mobile:""
+		          mobile:""
             }
         })
       }
