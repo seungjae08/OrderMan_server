@@ -1,3 +1,3 @@
-module.exports={
-    info:require("./order_info")
+module.exports = {
+    info: require("./order_info")
 }
