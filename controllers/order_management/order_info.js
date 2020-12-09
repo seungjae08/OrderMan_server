@@ -63,7 +63,7 @@ module.exports={
                     state:ele.state
                 }]
             },[])
-
+	    
             let unknownData = unknownOrderData.reduce( (acc,ele)=>{
                 let userInfo = unknowns.filter(userele=>ele.userId===userele.id)[0]
                 let orderItems = unknownOrderItems.filter((orderItemsEle)=>orderItemsEle.orderId===ele.id)
@@ -76,6 +76,9 @@ module.exports={
                     }]
                 },[])
                 // unknown 유저는 date column이 존재 하지 않기 때문에 date는 공백으로 둔다.
+		
+		if(ele.userId==null){ ele.userId = 1}
+		console.log(ele.userId)
                 ele["date"] = "";
                 return [...acc,{
                     userType:"unknown",
@@ -89,6 +92,7 @@ module.exports={
                     state:ele.state
                 }]
             },[])
+	    console.log(unknownData)
             let arr =[...userData,...unknownData];
             let result = arr.sort((a,b)=>{
                 let first = a.deliveryTime.split("-").join("").split(" ").join("").split(":").join("");
