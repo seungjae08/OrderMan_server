@@ -96,7 +96,9 @@ module.exports = {
         res.clearCookie("tempToken",{secure:true,sameSite:"none"})
         res.status(200).send(req.cookies)
       }
-      res.status(404).send(err)
+      else{
+        res.status(404).send(err)
+      }
     }
     
   },
