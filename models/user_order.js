@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     deliveryTime: DataTypes.STRING,
     paymentMethod: DataTypes.STRING,
     date: DataTypes.STRING,
+    hopePrice: DataTypes.INTEGER,
     state : DataTypes.BOOLEAN
   }, {
     sequelize,
