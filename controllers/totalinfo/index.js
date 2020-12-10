@@ -85,7 +85,7 @@ module.exports = {
       },{})
       if(data.length === 0){
         res.status(202).send({
-          orderList:{"":""},
+          orderList:{},
           market:{
             mobile:""
           }
@@ -109,7 +109,7 @@ module.exports = {
       if(err.message ==="jwt must be provided"){
         //비회원들에게 진행될 코드들
         res.status(202).send({
-            orderList:{"":""},
+            orderList:{},
             market:{
 		          mobile:""
             }
