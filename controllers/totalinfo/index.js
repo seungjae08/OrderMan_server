@@ -22,14 +22,14 @@ module.exports = {
       })
       let marketMobile = {}
       if(userMarket ==null){
-	marketMobile = {mobile:""}
+	      marketMobile = {mobile:""}
       }else{
         marketMobile = await market.findOne({
           attributes:["mobile"],
           where:{id:userMarket,marketId}
         })
       }
-	console.log({userMarket})
+	      console.log({userMarket})
      
       // 한 유저가 주문한 모든 날짜를 반환
       const userOrderInfo = await user_order.findAll({
@@ -83,8 +83,16 @@ module.exports = {
         obj[ele.date] = orderIdItems
         return {...acc,orderList:obj}
       },{})
-   
-      res.status(200).json({...data,market:{mobile:marketMobile.mobile}})
+      if(data.length === 0){
+        res.status(202).send({
+          orderList:{"":""},
+          market:{
+            mobile:""
+          }
+      })      }else{
+        res.status(200).json({...data,market:{mobile:marketMobile.mobile}})
+      }
+      
 
       
         /**
@@ -101,7 +109,7 @@ module.exports = {
       if(err.message ==="jwt must be provided"){
         //비회원들에게 진행될 코드들
         res.status(202).send({
-            orderList:{},
+            orderList:{"":""},
             market:{
 		          mobile:""
             }
