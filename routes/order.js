@@ -6,6 +6,8 @@ const { orderController } = require("../controllers");
 // POST /order/items
 router.post("/items", orderController.items.post);
 
+router.get("/items", orderController.items.get);
+
 // POST /order/temp
 router.post("/temp", orderController.temp.post);
 

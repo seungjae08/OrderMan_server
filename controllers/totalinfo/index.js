@@ -1,28 +1,26 @@
 const jwt = require("jsonwebtoken");
 const { secret } = require('../../config/config')
 const {
-  user, user_order, user_order_item,user_market,
+  user, user_order, user_order_item, user_market,
   // oauth_user, oauth_user_order, oauth_user_order_item,
   unknown, unknown_order, unknown_order_item,
-  item,market
+  item, market
 } = require("../../models");
 module.exports = {
   get: async (req, res) => {
 
     // if(회원){회원들이 이용하는것  if(어스)else if(일반회원)=>cookie.userType}=>AccessToken
     // else {비회원들을 위한 것}
-    try{
+    try {
       //회원들
       const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
       // 신원확인
-      const userId = await user.findOne({ where: { userId: JWT.userId } })
-
-
+      const userId = await user.findOne({ where: { userId: JWT.userId } });
       const userMarket = await user_market.findOne({
         attributes:["marketId"],
         where:{userId:userId.id}
       })
-      const marketMobiel =await market.findOne({
+      const marketMobile =await market.findOne({
         attributes:["mobile"],
         where:{id:userMarket.marketId}
       })
@@ -32,8 +30,8 @@ module.exports = {
         where: { userId: userId.id },
         raw: true
       }).catch(err => { console.log(err) });
+      
       // 날짜에 해당하는 모든 주문 리스트
-
       const orderIds = userOrderInfo.reduce((acc,ele)=>{
         return [...acc,ele.id]
       },[])
@@ -78,17 +76,10 @@ module.exports = {
         obj[ele.date] = orderIdItems
         return {...acc,orderList:obj}
       },{})
-      // let dataObject = {}
-      // const result = data.reduce((ele)=>{
-      //   if(Object.keys(ele) ===Object.keys(dataObject)){
-      //     dataObject[Object.keys(ele)[0]].push(ele.)
-      //   }
-      // })
-
+   
       res.json({...data,market:{mobile:marketMobiel.mobile}})
+
       
-
-
         /**
          * {
          *  orderList: {
@@ -110,7 +101,6 @@ module.exports = {
         })
       }
     }
-
     // 완전 최초 사용자 일 때
   },
 };
