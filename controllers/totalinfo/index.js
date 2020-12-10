@@ -84,7 +84,7 @@ module.exports = {
         return {...acc,orderList:obj}
       },{})
       console.log(data)
-      if(data.length === 0){
+      if(userOrderInfo.length === 0){
         
         res.status(200).send({
           orderList:{},
