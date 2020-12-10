@@ -6,6 +6,7 @@ const {
   unknown, unknown_order, unknown_order_item,
   item, market
 } = require("../../models");
+const { mkactivity } = require("../../routes/order");
 module.exports = {
   get: async (req, res) => {
 
@@ -29,6 +30,7 @@ module.exports = {
           where:{id:userMarket,marketId}
         })
       }
+      console.log({userId})
 	      console.log({userMarket})
      
       // 한 유저가 주문한 모든 날짜를 반환
@@ -48,7 +50,7 @@ module.exports = {
         where:{ orderId: orderIds},
         raw:true
       })
-	console.log({userOrderItems})
+	    console.log({userOrderItems})
       const itemIds = userOrderItems.reduce((acc,ele)=>{
         return [...acc,ele.itemId]
       },[]);
@@ -59,13 +61,14 @@ module.exports = {
         }
         return [...acc]
       },[])
-
+      console.log({itemIds})
       const items = await item.findAll({
         attributes:["id","item","unit"],
         where:{id:itemIdsDeleteOverlap},
         raw:true
       })
- 
+      console.log({items})
+
       const data = userOrderInfo.reduce((acc,ele)=>{
         let orderIdItems = userOrderItems.reduce((OIacc,OIele)=>{
           if(ele.id===OIele.orderId){
@@ -83,16 +86,15 @@ module.exports = {
         obj[ele.date] = orderIdItems
         return {...acc,orderList:obj}
       },{})
-      console.log(data)
+      console.log({data})
       if(userOrderInfo.length === 0){
-        
         res.status(200).send({
           orderList:{},
           market:{
             mobile:""
           }
       })      
-    }else{
+      }else{
         res.status(200).json({...data,market:{mobile:marketMobile.mobile}})
       }
       
