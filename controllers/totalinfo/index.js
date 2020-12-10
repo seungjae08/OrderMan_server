@@ -16,6 +16,7 @@ module.exports = {
       const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
       // 신원확인
       const userId = await user.findOne({ where: { userId: JWT.userId } });
+      console.log(userId)
       const userMarket = await user_market.findOne({
         attributes:["marketId"],
         where:{userId:userId.id}
@@ -77,7 +78,7 @@ module.exports = {
         return {...acc,orderList:obj}
       },{})
    
-      res.json({...data,market:{mobile:marketMobiel.mobile}})
+      res.status(200).json({...data,market:{mobile:marketMobiel.mobile}})
 
       
         /**
