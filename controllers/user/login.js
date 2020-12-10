@@ -29,7 +29,6 @@ module.exports = {
       .createHmac("sha256", secret.secret_pw)
       .update(password)
       .digest("base64");
-    console.log(userId)
     let idSearch = await user.findOne({
       where: {
         userId: userId,

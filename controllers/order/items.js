@@ -8,6 +8,19 @@ const {
 } = require("../../models");
 
 module.exports = {
+  get: async(req,res)=>{
+    let items = await item.findAll({
+      attributes : ["item","unit"]
+    })
+    let itemNames = items.reduce((acc,ele)=>{
+      return [...acc,ele.item]
+    },[])
+    let unitNames = items.reduce((acc,ele)=>{
+      return [...acc,ele.unit]
+    },[])
+    res.json({itemNames,unitNames})
+  },
+
   post: async (req, res) => {
     // 일반회원은 standard
     try{
