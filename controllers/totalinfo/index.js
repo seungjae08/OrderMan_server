@@ -110,6 +110,7 @@ module.exports = {
          * }
          */
     }catch(err){
+      console.log(err)
       if(err.message ==="jwt must be provided"){
         //비회원들에게 진행될 코드들
         res.status(202).send({
