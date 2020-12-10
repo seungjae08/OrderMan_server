@@ -83,8 +83,9 @@ module.exports = {
         obj[ele.date] = orderIdItems
         return {...acc,orderList:obj}
       },{})
+      console.log(data)
       if(data.length === 0){
-        console.log(data.length)
+        
         res.status(200).send({
           orderList:{},
           market:{
