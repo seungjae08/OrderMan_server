@@ -52,44 +52,6 @@ module.exports = {
                     }];
                 }, []);
 
-<<<<<<< HEAD
-            let userData = await userOrderData.reduce( (acc,ele)=>{
-                let userInfo = users.filter(userele=>ele.userId===userele.id)[0]
-                let orderItems = userOrderItems.filter((orderItemsEle)=>orderItemsEle.orderId===ele.id)
-                let itemList = orderItems.reduce((listacc,listele)=>{
-                    let itemNameUnit = items.filter(itemEle=>itemEle.id===listele.itemId)[0]
-                    return [...listacc,{
-                        item:itemNameUnit.item,
-                        unit:itemNameUnit.unit,
-                        quantity:listele.quantity
-                    }]
-                },[])
-                
-                return [...acc,{
-                    userType:"user",
-                    orderId:ele.id,
-                    userId:ele.userId,
-                    user:{mobile:userInfo.mobile,address:userInfo.address,brand:userInfo.brand},
-                    orderDate:ele.date,
-                    deliveryTime:ele.deliveryTime,
-                    paymentMethod:ele.paymentMethod,
-                    itemList : itemList,
-                    state:ele.state
-                }]
-            },[])
-	    
-            let unknownData = unknownOrderData.reduce( (acc,ele)=>{
-                let userInfo = unknowns.filter(userele=>ele.userId===userele.id)[0]
-                let orderItems = unknownOrderItems.filter((orderItemsEle)=>orderItemsEle.orderId===ele.id)
-                let itemList = orderItems.reduce((listacc,listele)=>{
-                    let itemNameUnit = items.filter(itemEle=>itemEle.id===listele.itemId)[0]
-                    return [...listacc,{
-                        item:itemNameUnit.item,
-                        unit:itemNameUnit.unit,
-                        quantity:listele.quantity
-                    }]
-                },[])
-=======
                 return [...acc, {
                     userType: "user",
                     orderId: ele.id,
@@ -114,29 +76,11 @@ module.exports = {
                         quantity: listele.quantity
                     }];
                 }, []);
->>>>>>> a7e3e272def3e91baef5ef1620bfd2de1ac6f497
                 // unknown 유저는 date column이 존재 하지 않기 때문에 date는 공백으로 둔다.
 		
 		if(ele.userId==null){ ele.userId = 1}
 		console.log(ele.userId)
                 ele["date"] = "";
-<<<<<<< HEAD
-                return [...acc,{
-                    userType:"unknown",
-                    orderId:ele.id,
-                    userId:ele.userId,
-                    user:{mobile:userInfo.mobile,address:userInfo.address,brand:userInfo.brand},
-                    orderDate:ele.date,
-                    deliveryTime:ele.deliveryTime,
-                    paymentMethod:ele.paymentMethod,
-                    itemList : itemList,
-                    state:ele.state
-                }]
-            },[])
-	    console.log(unknownData)
-            let arr =[...userData,...unknownData];
-            let result = arr.sort((a,b)=>{
-=======
                 return [...acc, {
                     userType: "unknown",
                     orderId: ele.id,
@@ -151,7 +95,6 @@ module.exports = {
             }, []);
             let arr = [...userData, ...unknownData];
             let result = arr.sort((a, b) => {
->>>>>>> a7e3e272def3e91baef5ef1620bfd2de1ac6f497
                 let first = a.deliveryTime.split("-").join("").split(" ").join("").split(":").join("");
                 let second = b.deliveryTime.split("-").join("").split(" ").join("").split(":").join("");
                 return second - first
