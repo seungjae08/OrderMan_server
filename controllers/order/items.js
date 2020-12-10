@@ -13,10 +13,19 @@ module.exports = {
       attributes : ["item","unit"]
     })
     let itemNames = items.reduce((acc,ele)=>{
-      return [...acc,ele.item]
+      if(acc.indexOf(ele.item)===-1){
+        return [...acc,ele.item]
+      }else{
+        return [...acc]
+      }
+      
     },[])
     let unitNames = items.reduce((acc,ele)=>{
-      return [...acc,ele.unit]
+      if(acc.indexOf(ele.unit)===-1){
+        return [...acc,ele.unit]
+      }else{
+        return [...acc]
+      }
     },[])
     res.json({itemNames,unitNames})
   },
