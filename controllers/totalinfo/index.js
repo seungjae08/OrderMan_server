@@ -84,12 +84,14 @@ module.exports = {
         return {...acc,orderList:obj}
       },{})
       if(data.length === 0){
-        res.status(202).send({
+        console.log(data.length)
+        res.status(200).send({
           orderList:{},
           market:{
             mobile:""
           }
-      })      }else{
+      })      
+    }else{
         res.status(200).json({...data,market:{mobile:marketMobile.mobile}})
       }
       
