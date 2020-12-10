@@ -8,6 +8,19 @@ const {
 } = require("../../models");
 
 module.exports = {
+  get: async(req,res)=>{
+    let items = await item.findAll({
+      attributes : ["item","unit"]
+    })
+    let itemNames = items.reduce((acc,ele)=>{
+      return [...acc,ele.item]
+    },[])
+    let unitNames = items.reduce((acc,ele)=>{
+      return [...acc,ele.unit]
+    },[])
+    res.json({itemNames,unitNames})
+  },
+
   post: async (req, res) => {
     try {
       // 쿠키에 담긴 jwt의 body를 decode해서 사용자 ID 확인

@@ -6,10 +6,9 @@ module.exports = {
     try {
       const { itemList, hopePrice } = req.body
       const tempToken = jwt.sign(
-        {
-          itemList: itemList,
-          hopePrice: hopePrice
-        },
+        { itemList: itemList,
+	        hopePrice:hopePrice },
+
         secret.secret_jwt,
         { expiresIn: "7d" }
       );
