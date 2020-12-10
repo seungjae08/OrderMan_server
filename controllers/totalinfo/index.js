@@ -26,7 +26,7 @@ module.exports = {
       }else{
         marketMobile = await market.findOne({
           attributes:["mobile"],
-          where:{id:userMarket,marketId}
+          where:{id:userMarket.marketId}
         })
       }
       console.log({userId})
