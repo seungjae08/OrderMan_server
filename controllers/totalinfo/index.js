@@ -16,33 +16,39 @@ module.exports = {
       const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
       // 신원확인
       const userId = await user.findOne({ where: { userId: JWT.userId } });
-      console.log(userId)
       const userMarket = await user_market.findOne({
         attributes:["marketId"],
         where:{userId:userId.id}
       })
-      const marketMobile =await market.findOne({
-        attributes:["mobile"],
-        where:{id:userMarket.marketId}
-      })
+      let marketMobile = {}
+      if(userMarket ==null){
+	marketMobile = {mobile:""}
+      }else{
+        marketMobile = await market.findOne({
+          attributes:["mobile"],
+          where:{id:userMarket,marketId}
+        })
+      }
+	console.log({userMarket})
+     
       // 한 유저가 주문한 모든 날짜를 반환
       const userOrderInfo = await user_order.findAll({
         attributes: ["id", "date","state"],
         where: { userId: userId.id },
         raw: true
       }).catch(err => { console.log(err) });
-      
+      	console.log({userOrderInfo})
       // 날짜에 해당하는 모든 주문 리스트
       const orderIds = userOrderInfo.reduce((acc,ele)=>{
         return [...acc,ele.id]
       },[])
-      
+      	console.log({orderIds})
       const userOrderItems = await user_order_item.findAll({
         attributes:["id","orderId","itemId","quantity"],
         where:{ orderId: orderIds},
         raw:true
       })
-
+	console.log({userOrderItems})
       const itemIds = userOrderItems.reduce((acc,ele)=>{
         return [...acc,ele.itemId]
       },[]);
@@ -78,7 +84,7 @@ module.exports = {
         return {...acc,orderList:obj}
       },{})
    
-      res.status(200).json({...data,market:{mobile:marketMobiel.mobile}})
+      res.status(200).json({...data,market:{mobile:marketMobile.mobile}})
 
       
         /**
