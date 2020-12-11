@@ -38,7 +38,6 @@ module.exports = {
         where: { userId: userId.id },
         raw: true
       }).catch(err => { console.log(err) });
-      	console.log({userOrderInfo})
       // 날짜에 해당하는 모든 주문 리스트
       const orderIds = userOrderInfo.reduce((acc,ele)=>{
         return [...acc,ele.id]
@@ -110,7 +109,6 @@ module.exports = {
          * }
          */
     }catch(err){
-      console.log(err)
       if(err.message ==="jwt must be provided"){
         //비회원들에게 진행될 코드들
         res.status(202).send({
