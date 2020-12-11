@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   oauth.init({
     mobile: DataTypes.STRING,
+    userId:DataTypes.STRING,
     address: DataTypes.STRING,
     brand: DataTypes.STRING,
     birth: DataTypes.STRING
