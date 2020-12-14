@@ -33,7 +33,6 @@ module.exports = {
                 res.status(202).send({msg:"errNowPassword"})
             }
         }catch(err){
-        
             res.status(404).send({err})
         }
     }
