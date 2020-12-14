@@ -24,6 +24,8 @@ module.exports = {
             .update(newPassword)
             .digest("base64");
             if(userData.password === encryptedNow){
+		console.log(encryptedNow)
+		console.loh(encryptedNew)
                 await user.update({password:encryptedNew},{
                     where:{userId:JWT.userId}
                 }).catch(err=>res.status(202).send(err))
