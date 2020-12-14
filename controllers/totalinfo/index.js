@@ -38,6 +38,10 @@ module.exports = {
         where: { userId: userId.id },
         raw: true
       }).catch(err => { console.log(err) });
+      // 주문자 상태를 반환해주는 값
+      const orderStates = userOrderInfo.reduce((acc,ele)=>{
+        return [...acc,ele.state]
+      },[])
       // 날짜에 해당하는 모든 주문 리스트
       const orderIds = userOrderInfo.reduce((acc,ele)=>{
         return [...acc,ele.id]
@@ -94,7 +98,7 @@ module.exports = {
           }
       })      
       }else{
-        res.status(200).json({orderList:data,market:{mobile:marketMobile.mobile}})
+        res.status(200).json({orderList:data,state:orderStates,market:{mobile:marketMobile.mobile}})
       }
       
 
