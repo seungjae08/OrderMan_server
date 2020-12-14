@@ -16,7 +16,7 @@ module.exports = {
             })
             const encrypted = crypto
             .createHmac("sha256", secret.secret_pw)
-            .update(password)
+            .update(newPassword)
             .digest("base64");
             if(userData.password === encrypted){
                 await user.update({password:encrypted},{
