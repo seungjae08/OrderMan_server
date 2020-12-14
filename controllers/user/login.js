@@ -52,7 +52,7 @@ module.exports = {
           { expiresIn: "7d" }
         );
         res.cookie("accessToken", accessToken, { secure: true,sameSite:'none' });
-        res.cookie("userType", "standard",{ secure: true,sameSite:'none' });
+        res.cookie("userType", "standard",{secure:true,sameSite:'none'});
         res
           .status(200)
           .json({ accessToken: accessToken, message: "login success" });

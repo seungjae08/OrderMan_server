@@ -38,7 +38,14 @@ module.exports = {
         where: { userId: userId.id },
         raw: true
       }).catch(err => { console.log(err) });
-      
+      if(userOrderInfo.length === 0){
+        return res.status(200).send({
+          orderList:{},
+          market:{
+            mobile:""
+          }
+        })
+      }
       // 날짜에 해당하는 모든 주문 리스트
       const orderIds = userOrderInfo.reduce((acc,ele)=>{
         return [...acc,ele.id]
@@ -76,7 +83,6 @@ module.exports = {
           }
           return [...OIacc]
         },[])
-        console.log("orderIdItems",orderIdItems)
         let obj ={}
         if(acc[ele.date]===undefined){
           obj[ele.date] = orderIdItems
@@ -87,16 +93,10 @@ module.exports = {
         return {...acc,...obj}
       },{})
       console.log({data})
-      if(userOrderInfo.length === 0){
-        res.status(200).send({
-          orderList:{},
-          market:{
-            mobile:""
-          }
-      })      
-      }else{
-        res.status(200).json({orderList:data,market:{mobile:marketMobile.mobile}})
-      }
+            
+      
+      return res.status(200).json({orderList:data,market:{mobile:marketMobile.mobile}})
+      
       
 
       
