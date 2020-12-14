@@ -80,7 +80,7 @@ module.exports = {
           return [...OIacc]
         },[])
 
-        let obj ={...acc.orderList}
+        let obj ={...acc}
         if(obj[ele.date]===undefined){
           obj[ele.date] = orderIdItems
         }else{
