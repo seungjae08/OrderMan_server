@@ -29,8 +29,8 @@ module.exports = {
           where:{id:userMarket.marketId}
         })
       }
-      console.log({userId})
-	      console.log({userMarket})
+      console.log("userId",{userId})
+	    console.log("userMarket",{userMarket})
      
       // 한 유저가 주문한 모든 날짜를 반환
       const userOrderInfo = await user_order.findAll({
@@ -42,13 +42,11 @@ module.exports = {
       const orderIds = userOrderInfo.reduce((acc,ele)=>{
         return [...acc,ele.id]
       },[])
-      	console.log({orderIds})
       const userOrderItems = await user_order_item.findAll({
         attributes:["id","orderId","itemId","quantity"],
         where:{ orderId: orderIds},
         raw:true
       })
-	    console.log({userOrderItems})
       const itemIds = userOrderItems.reduce((acc,ele)=>{
         return [...acc,ele.itemId]
       },[]);
@@ -59,13 +57,11 @@ module.exports = {
         }
         return [...acc]
       },[])
-      console.log({itemIds})
       const items = await item.findAll({
         attributes:["id","item","unit"],
         where:{id:itemIdsDeleteOverlap},
         raw:true
       })
-      console.log({items})
 
       const data = userOrderInfo.reduce((acc,ele)=>{
         let orderIdItems = userOrderItems.reduce((OIacc,OIele)=>{
@@ -79,12 +75,12 @@ module.exports = {
           }
           return [...OIacc]
         },[])
-
+        console.log("orderIdItems",orderIdItems)
         let obj ={}
         if(acc[ele.date]===undefined){
           obj[ele.date] = orderIdItems
         }else{
-          obj[ele.date] = [...acc[ele.date],orderIdItems]
+          obj[ele.date] = [...acc[ele.date],...orderIdItems]
         }
         
         return {...acc,...obj}
