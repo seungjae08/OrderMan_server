@@ -17,4 +17,7 @@ router.get("/temp", orderController.temp.get);
 // POST /order/market
 router.post("/market", orderController.market.post);
 
+// GET /order/history
+router.get("/history",orderController.orderHistory.get)
+
 module.exports = router;
