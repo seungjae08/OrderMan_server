@@ -14,14 +14,19 @@ module.exports = {
                     userId:JWT.userId,
                 }
             })
-            const encrypted = crypto
+            const encryptedNow = crypto
+            .createHmac("sha256", secret.secret_pw)
+            .update(password)
+            .digest("base64");
+
+            const encryptedNew = crypto
             .createHmac("sha256", secret.secret_pw)
             .update(newPassword)
             .digest("base64");
-            if(userData.password === encrypted){
-                await user.update({password:encrypted},{
+            if(userData.password === encryptedNow){
+                await user.update({password:encryptedNew},{
                     where:{userId:JWT.userId,
-                    password:password}
+                    password:encryptedNow}
                 }).catch(err=>res.status(202).send(err))
                 res.state(200).send({msg : "비밀번호 바꾸기 성공"})
             }else{
