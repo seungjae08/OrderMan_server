@@ -23,12 +23,12 @@ module.exports = {
             .createHmac("sha256", secret.secret_pw)
             .update(newPassword)
             .digest("base64");
+
             if(userData.password === encryptedNow){
-		console.log(encryptedNow)
-		console.loh(encryptedNew)
                 await user.update({password:encryptedNew},{
                     where:{userId:JWT.userId}
-                }).catch(err=>res.status(202).send(err))
+                }).catch(err=>console.log(err))
+                
                 res.state(200).send({msg : "비밀번호 바꾸기 성공"})
             }else{
                 res.status(202).send({msg:"errNowPassword"})
