@@ -84,7 +84,7 @@ module.exports = {
         if(obj[ele.date]===undefined){
           obj[ele.date] = orderIdItems
         }else{
-          obj[ele.date] = [...ele.date,orderIdItems]
+          obj[ele.date] = [...obj[ele.date],orderIdItems]
         }
         
         return {...acc,orderList:obj}
