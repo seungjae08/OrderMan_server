@@ -19,9 +19,9 @@ module.exports = {
             .update(password)
             .digest("base64");
             if(userData.password === encrypted){
-                await user.update({password:newPassword},{
+                await user.update({password:encrypted},{
                     where:{userId:JWT.userId,
-                    password:encrypted}
+                    password:password}
                 }).catch(err=>res.status(202).send(err))
                 res.state(200).send({msg : "비밀번호 바꾸기 성공"})
             }else{
