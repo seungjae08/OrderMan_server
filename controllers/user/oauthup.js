@@ -1,21 +1,73 @@
+const fetch = require("node-fetch");
+const fileType = require('file-type');
+const { oauth_user } = require("../../models");
+const { Op } = require("sequelize");
+const jwt = require("jsonwebtoken");
+const { secret } = require("../../config/config");
+
 module.exports = {
   post: async (req, res) => {
     // 최초 Oauth 회원가입 시 여기서 데이터 받아서 저장
-    res.status(200).end();
+    const kakaoId = jwt.verify(req.cookies.accessToken, secret.secret_jwt).userId;
+    const { mobile, address, brand, birth } = req.body;
+    let [oauthUser, created] = await oauth_user.findOrCreate({
+      where: {
+        // userId 혹은 mobile 중복 여부 체크
+        [Op.or]: [{ userId: kakaoId }, { mobile: mobile }],
+      },
+      defaults: {
+        userId: kakaoId,
+        mobile: mobile,
+        address: address,
+        brand: brand,
+        birth: birth
+      },
+    });
+    if (created) {
+      res.status(200).send("Oauth sign up successed");
+    } else {
+      res.status(202).send(oauthUser);
+    };
   },
   get: async (req, res) => {
+    const token = "Bearer " + req.token;
+    fetch('https://kapi.kakao.com/v1/user/access_token_info',
+      {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+          'Authorization': token,
+        }
+      })
+      .then(res => {
+        return res.json();
+      })
+      .then(async (data) => {
+        const kakaoId = data.id;
+        console.log(kakaoId);
 
-    // 여기서 oauth가입자 여부 분기처리
-    /**
-     * 2.. Oauoth 로그인
-- 클라이언트에서 사용자가 Oauth 아이디 / 비밀번호 입력 후 Oauth 서버에 요청
-- 클라이언트에서 Oauth에서 토큰을 발급받고, 해당 토큰을 서버로 보내준다.
-- 서버는 해당 토큰으로 Oauth 서버 API에 사용자 정보를 요청하고, res로 받은 사용자 정보를 통해 회원가입 여부를 판단한다.
-1) 만약 회원가입한 경우 서버에서 특정 status와 유저정보 + 유저타입을 토큰으로 넘겨준다.
-2) 만약 최초 회원일 경우 서버에서 특정 status를 넘겨준다.
-  - 클라이언트에서 회원가입 정보를 서버로 보내고, 서버는 데이터를 받아서 DB에 저장하고, 회원가입한 특정 status와 유저정보 + 유저타입을 토큰으로 보내준다.
+        const userInfo = await oauth_user.findOne({
+          where: { userId: kakaoId }
+        });
+        console.log(userInfo);
 
-     */
-    res.status(200).end()
+        if (userInfo) {
+          // 기존회원 200
+          const accessToken = jwt.sign({ userId: kakaoId },
+            secret.secret_jwt,
+            { expiresIn: "7d" }
+          );
+          res.cookie("accessToken", accessToken, { secure: true, sameSite: 'none' });
+          res.cookie("userType", "oauth", { secure: true, sameSite: 'none' });
+          res.status(200)
+            .json({ accessToken: accessToken, message: "Already exist user, welcome to login" });
+        } else {
+          // 신규회원 202
+          res.status(202).send("User doesn't exist. Please sign up firstly");
+        }
+      })
+      .catch(err => {
+        res.status(200).send(err);
+      });
   }
 };
