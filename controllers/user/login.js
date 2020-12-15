@@ -8,16 +8,17 @@ const { secret } = require("../../config/config");
 module.exports = {
   get: async (req, res) => {
     try {
-      if (req.cookie.userType === "standard") {
+      if (req.cookies.userType === "standard") {
         const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
         const userId = await user.findOne({ where: { userId: JWT.userId } })
         res.status(200).send("200")
-      } else if (req.cookie.userType === "oauth") {
+      } else if (req.cookies.userType === "oauth") {
         const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
         const userId = await oauth.findOne({ where: { userId: JWT.userId } })
         res.status(200).send("200")
       }
     } catch (err) {
+      console.log(err)
       if (err.message === "jwt must be provided") {
         res.status(202).send("202")
       }
@@ -56,8 +57,8 @@ module.exports = {
           secret.secret_jwt,
           { expiresIn: "7d" }
         );
-        res.cookie("accessToken", accessToken, { secure: true, sameSite: 'none' });
-        res.cookie("userType", "standard", { secure: true, sameSite: 'none' });
+        res.cookie("accessToken", accessToken,/* { secure: true, sameSite: 'none' }*/);
+        res.cookie("userType", "standard",/* { secure: true, sameSite: 'none' }*/);
         res
           .status(200)
           .json({ accessToken: accessToken, message: "login success" });
