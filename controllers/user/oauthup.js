@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 const fileType = require('file-type');
-const { oauth_user } = require("../../models");
+const { oauth } = require("../../models");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { secret } = require("../../config/config");
@@ -10,7 +10,7 @@ module.exports = {
     // 최초 Oauth 회원가입 시 여기서 데이터 받아서 저장
     const kakaoId = jwt.verify(req.cookies.accessToken, secret.secret_jwt).userId;
     const { mobile, address, brand, birth } = req.body;
-    let [oauthUser, created] = await oauth_user.findOrCreate({
+    let [oauthUser, created] = await oauth.findOrCreate({
       where: {
         // userId 혹은 mobile 중복 여부 체크
         [Op.or]: [{ userId: kakaoId }, { mobile: mobile }],
@@ -46,7 +46,7 @@ module.exports = {
         const kakaoId = data.id;
         console.log(kakaoId);
 
-        const userInfo = await oauth_user.findOne({
+        const userInfo = await oauth.findOne({
           where: { userId: kakaoId }
         });
         console.log(userInfo);
