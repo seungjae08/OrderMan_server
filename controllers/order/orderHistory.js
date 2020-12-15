@@ -10,7 +10,7 @@ module.exports = {
             const JWT = jwt.verify(req.cookies.accessToken,secret.secret_jwt);
             const userId = await user.findOne({where:{userId:JWT.userId}});
             const userOrderInfo = await user_order.findAll({
-                attributes: ["id", "date","state","deliveryTime","paymentMethod"],
+                attributes: ["id", "date","state","deliveryTime","paymentMethod","hopePrice"],
                 where: { userId: userId.id },
                 raw: true
             }).catch(err => { console.log(err) });
@@ -61,7 +61,8 @@ module.exports = {
                     state:ele.state,
                     orderList:orderIdItems,
                     paymentMethod:ele.paymentMethod,
-                    deliveryTime:ele.deliveryTime
+                    deliveryTime:ele.deliveryTime,
+                    hopePrice:ele.hopePrice
                 }]
             },[])
            
