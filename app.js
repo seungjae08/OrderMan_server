@@ -8,6 +8,7 @@ const cors = require("cors");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const bearerToken = require('express-bearer-token');
 
 // 라우터
 const totalInfoRouter = require("./routes/totalInfo");
@@ -34,6 +35,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bearerToken());
 
 app.set("jwt-secret", secret.secret);
 
