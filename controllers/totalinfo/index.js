@@ -38,6 +38,7 @@ module.exports = {
         where: { userId: userId.id },
         raw: true
       }).catch(err => { console.log(err) });
+      
       if(userOrderInfo.length === 0){
         return res.status(200).send({
           orderList:{},
@@ -46,15 +47,18 @@ module.exports = {
           }
         })
       }
+
       // 날짜에 해당하는 모든 주문 리스트
       const orderIds = userOrderInfo.reduce((acc,ele)=>{
         return [...acc,ele.id]
       },[])
+
       const userOrderItems = await user_order_item.findAll({
         attributes:["id","orderId","itemId","quantity"],
         where:{ orderId: orderIds},
         raw:true
       })
+
       const itemIds = userOrderItems.reduce((acc,ele)=>{
         return [...acc,ele.itemId]
       },[]);
@@ -65,6 +69,7 @@ module.exports = {
         }
         return [...acc]
       },[])
+
       const items = await item.findAll({
         attributes:["id","item","unit"],
         where:{id:itemIdsDeleteOverlap},
@@ -89,27 +94,11 @@ module.exports = {
         }else{
           obj[ele.date] = [...acc[ele.date],...orderIdItems]
         }
-        
         return {...acc,...obj}
       },{})
-      console.log({data})
-            
-      
+    
       return res.status(200).json({orderList:data,market:{mobile:marketMobile.mobile}})
       
-      
-
-      
-        /**
-         * {
-         *  orderList: {
-         *    date1: [{item, quantity, unit}, {item, quantity, unit},{item, quantity, unit},{item, quantity, unit}],
-         *    date2: [{}],
-         * },
-         *  market: string,
-         *  temp: [ {}, {} ]
-         * }
-         */
     }catch(err){
       if(err.message ==="jwt must be provided"){
         //비회원들에게 진행될 코드들
