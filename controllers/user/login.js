@@ -8,17 +8,15 @@ const { secret } = require("../../config/config");
 module.exports = {
   get: async (req, res) => {
     try {
+      const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
       if (req.cookies.userType === "standard") {
-        const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
         const userId = await user.findOne({ where: { userId: JWT.userId } })
         res.status(200).send("200")
       } else if (req.cookies.userType === "oauth") {
-        const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
         const userId = await oauth.findOne({ where: { userId: JWT.userId } })
         res.status(200).send("200")
       }
     } catch (err) {
-      console.log(err)
       if (err.message === "jwt must be provided") {
         res.status(202).send("202")
       }
