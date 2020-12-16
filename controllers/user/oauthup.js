@@ -8,16 +8,24 @@ const { secret } = require("../../config/config");
 module.exports = {
   post: async (req, res) => {
     // 최초 Oauth 회원가입 시 여기서 데이터 받아서 저장
+
     try {
       const kakaoId = jwt.verify(req.cookies.oauthToken, secret.secret_jwt).userId;
       const { mobile, address, brand, birth } = req.body;
-      let oauthUser = await oauth.Create({
+      let oauthUser = await oauth.create({
         userId: kakaoId,
         mobile: mobile,
         address: address,
         brand: brand,
         birth: birth
       });
+      const accessToken = jwt.sign({ userId: kakaoId },
+        secret.secret_jwt,
+        { expiresIn: "7d" }
+      );
+      res.cookie("accessToken", accessToken, { secure: true, sameSite: 'none' });
+      res.cookie("userType", "oauth", { secure: true, sameSite: 'none' });
+      res.clearCookie("oauthToken", { secure: true, sameSite: "none" })
       res.status(200).send("Oauth sign up successed");
     } catch (err) {
       res.status(202).send(err);
@@ -38,12 +46,10 @@ module.exports = {
       })
       .then(async (data) => {
         const kakaoId = data.id;
-        console.log(kakaoId);
-
         const userInfo = await oauth.findOne({
-          where: { userId: kakaoId }
+          where: { userId: kakaoId },
+          raw: true
         });
-        console.log(userInfo);
 
         if (userInfo) {
           // 기존회원 200
@@ -57,7 +63,7 @@ module.exports = {
             .json({ accessToken: accessToken, message: "Already exist user, welcome to login" });
         } else {
           // 신규회원 202
-          // 쿠키에 카카오 아이디를 추가해줘야 함
+          // 쿠키에 카카오 아이디 추가
           const oauthToken = jwt.sign({ userId: kakaoId },
             secret.secret_jwt,
             { expiresIn: "7d" }

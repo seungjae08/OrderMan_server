@@ -9,6 +9,7 @@ module.exports = {
   get: async (req, res) => {
     try {
       const JWT = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
+      console.log(JWT);
       if (req.cookies.userType === "standard") {
         const userId = await user.findOne({ where: { userId: JWT.userId } })
         res.status(200).send("200")
@@ -56,7 +57,7 @@ module.exports = {
           { expiresIn: "7d" }
         );
         res.cookie("accessToken", accessToken, { secure: true, sameSite: 'none' });
-        res.cookie("userType", "standard",{ secure: true, sameSite: 'none' });
+        res.cookie("userType", "standard", { secure: true, sameSite: 'none' });
         res
           .status(200)
           .json({ accessToken: accessToken, message: "login success" });

@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { secret } = require('../../config/config')
 const {
   user, user_market,
-  // oauth, oauth_market,
+  oauth, oauth_market,
   unknown, unknown_market,
   market
 } = require("../../models");
@@ -45,7 +45,34 @@ module.exports = {
       }
       // 2. 회원분기 처리: oauth회원은 oauth
       else if (req.cookies.userType === "oauth") {
-        res.status(200).end()
+        // POST 데이터 확인
+        const { mobile } = req.body;
+        // 사용자 ID로 user테이블의 id 찾기
+        const userSelected = await oauth.findOne({
+          attributes: ["id"],
+          where: { userId: JWT.userId },
+          raw: true
+        });
+        // 선호마트정보 기입
+        let [mart, b] = await market.findOrCreate({
+          where: { mobile: mobile },
+          defaults: { mobile: mobile },
+          raw: true
+        })
+        // 위의 id를 기반으로 user_order 테이블에 데이터 기록
+        let [result, created] = await oauth_market.findOrCreate({
+          where: { userId: userSelected.id },
+          defaults: { userId: userSelected.id, marketId: mart.id },
+          raw: true
+        }).catch(err => { res.status(404).send(err) })
+
+        if (!created) {
+          result = await oauth_market.update({ marketId: mart.id }, {
+            where: { userId: userSelected.id }
+          }).catch(err => { res.send(err) })
+        }
+
+        res.status(200).send({ result, created })
       }
     }
     // 3. 회원분기 처리: 비회원은 unknown
