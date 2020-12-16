@@ -16,7 +16,7 @@ router.get("/oauthup", userController.oauthup.get);
 router.post("/login", userController.login.post);
 
 // GET /user/login
-router.get("/login" , userController.login.get)
+router.get("/login", userController.login.get)
 
 // GET /user/logout
 router.get("/logout", userController.logout.get);

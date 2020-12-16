@@ -1,13 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const {mypageController} =require("../controllers");
+const { mypageController } = require("../controllers");
 
-router.get("/user",mypageController.user.get);
+// GET /mypage/user
+router.get("/user", mypageController.user.get);
 
-router.post("/user",mypageController.user.post);
+// POST /mypage/user
+router.post("/user", mypageController.user.post);
 
-router.post("/password",mypageController.password.post);
+// POST /mypage/password
+router.post("/password", mypageController.password.post);
 
-router.post("/mobile",mypageController.mobile.post)
+// POST /mypage/mobile
+router.post("/mobile", mypageController.mobile.post);
 
 module.exports = router
