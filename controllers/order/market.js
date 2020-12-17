@@ -62,6 +62,7 @@ module.exports = {
         // 위의 id를 기반으로 user_order 테이블에 데이터 기록
         let [result, created] = await oauth_market.findOrCreate({
           where: { userId: userSelected.id },
+	  attributes: ["id", "userId", "marketId"],
           defaults: { userId: userSelected.id, marketId: mart.id },
           raw: true
         }).catch(err => { res.status(404).send(err) })

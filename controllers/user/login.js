@@ -15,7 +15,7 @@ module.exports = {
         res.status(200).send("200")
       } else if (req.cookies.userType === "oauth") {
         const userId = await oauth.findOne({ where: { userId: JWT.userId } })
-        res.status(200).send("200")
+        res.status(203).send("203")
       }
     } catch (err) {
       if (err.message === "jwt must be provided") {

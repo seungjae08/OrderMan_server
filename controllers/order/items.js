@@ -30,6 +30,7 @@ module.exports = {
     res.json({ itemNames, unitNames })
   },
   post: async (req, res) => {
+
     try {
       // 쿠키에 담긴 jwt의 body를 decode해서 사용자 ID 확인
       const { userId } = jwt.verify(req.cookies.accessToken, secret.secret_jwt);
