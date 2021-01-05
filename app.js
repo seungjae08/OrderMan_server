@@ -21,7 +21,7 @@ const mypageRouter = require('./routes/mypage')
 const { secret } = require("./config/config");
 
 const app = express();
-const port = 8080;
+const port = 8000;
 
 app.use(
   cors({
