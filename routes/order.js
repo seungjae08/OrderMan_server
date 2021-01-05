@@ -6,6 +6,7 @@ const { orderController } = require("../controllers");
 // POST /order/items
 router.post("/items", orderController.items.post);
 
+// GET /order/items
 router.get("/items", orderController.items.get);
 
 // POST /order/temp
@@ -18,6 +19,6 @@ router.get("/temp", orderController.temp.get);
 router.post("/market", orderController.market.post);
 
 // GET /order/history
-router.get("/history",orderController.orderHistory.get)
+router.get("/history", orderController.orderHistory.get);
 
 module.exports = router;

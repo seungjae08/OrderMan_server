@@ -16,12 +16,12 @@ const userRouter = require("./routes/user");
 const orderRouter = require("./routes/order");
 const unknownRouter = require('./routes/unknown')
 const managementRouter = require('./routes/management')
-const mypageRouter =require('./routes/mypage')
+const mypageRouter = require('./routes/mypage')
 
 const { secret } = require("./config/config");
 
 const app = express();
-const port = 8080;
+const port = 8000;
 
 app.use(
   cors({
@@ -47,7 +47,7 @@ app.use("/user", userRouter);
 app.use("/unknown", unknownRouter);
 app.use("/order", orderRouter);
 app.use("/management", managementRouter);
-app.use("/mypage",mypageRouter)
+app.use("/mypage", mypageRouter)
 app.set('port', port);
 app.listen(app.get('port'), () => {
   console.log(`app is listening in PORT ${app.get('port')}`);
