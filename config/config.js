@@ -2,10 +2,10 @@ require("dotenv").config();
 
 module.exports = {
   development: {
-    username: "orderman_db",
-    password: "orderman1",
+    username: "admin",
+    password: "coinarticle",
     database: "orderMan",
-    host: "orderman-db.ckwpgboktlpi.us-east-1.rds.amazonaws.com",
+    host: "coinarticle.cuegy4rvwmpq.ap-northeast-2.rds.amazonaws.com",
     dialect: "mysql",
     logging: false,
   },
